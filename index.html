@@ -262,6 +262,62 @@
             border-top: 1px solid #444;
         }
 
+        .output-copy-btn-container {
+            position: relative;
+        }
+
+        .copy-tooltip {
+            position: absolute;
+            background-color: var(--tooltip-bg);
+            color: var(--tooltip-color);
+            padding: var(--tooltip-padding);
+            border-radius: var(--tooltip-border-radius);
+            font-size: var(--tooltip-font-size);
+            opacity: var(--tooltip-opacity);
+            transition: opacity var(--tooltip-transition-duration) ease-in-out;
+            pointer-events: none;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 5px;
+        }
+
+        .edit-prompt-wrapper {
+            position: relative;
+        }
+
+        .edit-prompt-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .edit-prompt-wrapper:hover .edit-prompt-btn {
+            opacity: 1;
+        }
+
+        .file-feedback-active {
+            animation: pulse-upload 1s infinite;
+        }
+
+        @keyframes pulse-upload {
+            0% {
+                box-shadow: 0 0 0 0 rgba(123, 97, 255, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(123, 97, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(123, 97, 255, 0);
+            }
+        }
+
         #analysis-progress-area {
             position: fixed;
             bottom: 130px;
