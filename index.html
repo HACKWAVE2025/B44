@@ -55,6 +55,10 @@
             --chat-item-hover-bg: rgba(255, 255, 255, 0.1);
             --chat-item-active-bg: #7b61ff;
             --chat-item-active-border: #9a84ff;
+            --token-bar-bg: rgba(0, 0, 0, 0.2);
+            --token-bar-fill: #7b61ff;
+            --token-bar-fill-medium: #ffab00;
+            --token-bar-fill-high: #ff6b6b;
             --model-color-start: #7b61ff;
             --model-color-end: #b554ff;
             --model-color-border: rgba(181, 84, 255, 0.5);
@@ -108,8 +112,8 @@
             --status-bar-shadow: rgba(123, 97, 255, 0.4);
             --status-bar-idle-color: var(--secondary-text-color);
             --status-bar-idle-bg: rgba(0, 0, 0, 0.2);
-            --code-btn-bg: rgba(255, 255, 255, 0.1);
-            --code-btn-hover-bg: rgba(255, 255, 255, 0.2);
+            --code-btn-bg: rgba(50, 50, 50, 0.7);
+            --code-btn-hover-bg: rgba(70, 70, 70, 0.9);
             --code-btn-color: #c5bfff;
             --code-btn-hover-color: #f5f5f5;
             --copy-btn-copied-bg: var(--model-color-start);
@@ -140,12 +144,15 @@
         .file-upload-label-button {
             background: rgba(255, 255, 255, 0.07);
             color: var(--secondary-text-color);
-            padding: 8px 12px;
+            width: 36px;
+            height: 36px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
             transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             border: 1px solid transparent;
             line-height: 1.4;
             margin-right: 8px;
@@ -259,8 +266,13 @@
         .file-progress-item.status-finished, .file-progress-item.status-ended { border-color: var(--model-color-border); background-color: rgba(123, 97, 255, 0.1); }
 
         .placeholder-message .message-content { font-style: italic; color: var(--secondary-text-color); }
-        .placeholder-status.clickable { cursor: pointer; text-decoration: underline dotted; }
-        .analysis-indicator.clickable { cursor: pointer; text-decoration: underline dotted; }
+        .placeholder-status.clickable,
+        .analysis-indicator.clickable {
+            cursor: pointer;
+            text-decoration: underline dotted;
+            margin-left: 5px;
+            font-size: 0.9em;
+        }
         .analysis-content { font-size: 0.9em; line-height: 1.4; }
         .analysis-content small { display: block; margin-bottom: 5px; color: var(--secondary-text-color); }
         .formatted-analysis-context ul { list-style: disc; margin-left: 20px; margin-top: 5px; margin-bottom: 10px; }
@@ -274,7 +286,7 @@
         .formatted-analysis-context .rendered-markdown-block pre { background-color: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.15); }
         .formatted-analysis-context strong { color: var(--primary-text-color); } /* Ensure bold text is readable */
 
-        #chatInput, .modal-content, #editMarkdownInput, #regenerateFeedbackInput { scrollbar-width: none; -ms-overflow-style: none; }
+        #chatInput, .modal-content, #editMarkdownInput, #regenerateFeedbackInput, .CodeMirror-scroll { scrollbar-width: none; -ms-overflow-style: none; }
         #messages::-webkit-scrollbar { display: none; }
 
         body {
