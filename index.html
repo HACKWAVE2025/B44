@@ -20,6 +20,13 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify @3.0.6/dist/purify.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
 
     <style>
         :root {
@@ -124,6 +131,24 @@
              color: var(--primary-text-color);
              transform: translateY(-1px);
              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-controls .run-code-btn {
+            background-color: #00a77d;
+            color: white;
+            animation: pulse-run 2s infinite;
+        }
+
+        @keyframes pulse-run {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 167, 125, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 167, 125, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 167, 125, 0);
+            }
         }
 
         #analysis-progress-area {
