@@ -587,12 +587,15 @@
 
     
 
-    <div id="inputContainer">
+    <div id="inputContainer" style="display:none;">
+        <div class="drop-overlay">Drop files to upload</div>
          <div id="pendingFilesIndicator" style="font-size: 0.8em; color: var(--secondary-text-color); margin-bottom: 3px; display: none; padding-left: 5px;"></div>
+        <div id="stagedFilesContainer"></div>
         <textarea id="chatInput" placeholder="Send a message to Stellar..." rows="1"></textarea>
         <div class="input-buttons">
             <div class="left-buttons">
-                <label for="fileUpload" class="file-upload-label-button">📎</label>
+                <button id="voiceInputBtn"><svg><use href="#icon-mic"></use></svg></button>
+                <label for="fileUpload" class="file-upload-label-button"><svg><use href="#icon-attach"></use></svg></label>
                 <input type="file" id="fileUpload" multiple style="display: none;">
                 <button id="spectrumBtn">Spectrum</button>
                 <button id="spectrumSearchBtn">Spectral Search</button>
