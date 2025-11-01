@@ -517,18 +517,55 @@
             <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" fill="currentColor"/>
         </symbol>
     </svg>
+    <canvas id="metaball-canvas" style="display: none;"></canvas>
+    <canvas id="voiceWaveCanvas"></canvas>
+    <div id="voiceOverlay" style="display: none;">
+        <div class="voice-container">
+            <div class="voice-header">
+                <h2 id="voiceStatus">Listening...</h2>
+                <button id="closeVoiceOverlayBtn">&times;</button>
+            </div>
+            <div id="transcriptContainer">
+                <p id="interimTranscript"></p>
+                <p id="finalTranscript"></p>
+            </div>
+            <div class="voice-footer">
+                <button id="cancelVoiceBtn">Cancel</button>
+                <button id="sendTranscriptBtn">Send</button>
+            </div>
+        </div>
+    </div>
 </head>
 
 <body>
 
-    <header>
+    <header style="display:none;">
         <div class="title-gradient">Stellar</div>
         <button class="clear-icon" id="clearHistoryBtn">🗑️</button>
     </header>
 
     <div id="chatContainer">
         <div id="messages"></div>
-        <div id="analysis-progress-area"></div>
+    </div>
+    <div id="authContainer" style="display: none;">
+        <div class="auth-form-container">
+            <div id="loginForm">
+                <h2>Login</h2>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button id="loginBtn">Login</button>
+                <p>Don't have an account? <a href="#" id="showRegister">Register</a></p>
+            </div>
+            <div id="registerForm" style="display: none;">
+                <h2>Register</h2>
+                <input type="text" id="registerUsername" placeholder="Username" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button id="registerBtn">Register</button>
+                <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </div>
+            <div id="authMessage"></div>
+        </div>
     </div>
 
     
