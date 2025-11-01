@@ -540,9 +540,26 @@
 <body>
 
     <header style="display:none;">
-        <div class="title-gradient">Stellar</div>
-        <button class="clear-icon" id="clearHistoryBtn">🗑️</button>
+        <div class="header-left">
+            <button id="sidebarToggleBtn">&#9776;</button>
+            <span id="chatTitle" class="title-gradient">Stellar</span>
+        </div>
+        <div class="header-right">
+            <div id="modeSelectorHeaderContainer"></div>
+            <div id="profileIcon" title="View Profile"></div>
+        </div>
     </header>
+
+    <div id="sidebar" style="display:none;">
+        <div class="chat-search-container">
+            <input type="text" id="chatSearch" placeholder="Search chats...">
+            <button id="newChatBtn">+</button>
+        </div>
+        <div id="chatList"></div>
+        <div id="logoutButtonContainer">
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </div>
 
     <div id="chatContainer">
         <div id="messages"></div>
@@ -615,6 +632,17 @@
                 <button id="regenerateWithoutFeedbackBtn">Regenerate Without Feedback</button>
             </div>
         </div>
+    </div>
+
+    <div id="profileModal" style="display:none;">
+        <div class="modal-content">
+            <h2>User Profile</h2>
+            <div id="profileDetails"></div>
+            <div class="modal-buttons">
+                <button id="closeProfileModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
     </div>
 
     <span id="modelSelectWidthHelper"></span>
