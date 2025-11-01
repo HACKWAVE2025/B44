@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stellar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Marked for Markdown parsing (local file) -->
+  <script src="marked.min.js"></script>
+  <!-- Turndown for HTML to Markdown conversion (local file) -->
+  <script src="turndown.js"></script>
+  <style>
+    /* GLOBAL RESET & FONT */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+/* GLOBAL SCROLLBAR STYLING - HIDDEN UNTIL HOVER (Improved with Transition).*/
+
+/* For Webkit Browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+    transition: width 0.3s ease, height 0.3s ease; /* Smooth transition */
+}
+
+/* Show scrollbar on hover for scrollable elements */
+.scrollable-container:hover::-webkit-scrollbar,
+.carousel:hover::-webkit-scrollbar,
+.other-scrollable-element:hover::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0d0a20;
+    border-radius: 4px;
+    border: 1px solid rgba(123, 97, 255, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0b0818;
+    border: 1px solid rgba(0, 194, 146, 0.5);
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: auto; /* Or try 'auto' - see notes below */
+}
+
+/* More targeted approach for Firefox */
+.scrollable-container:hover,
+.carousel:hover,
+.other-scrollable-element:hover {
+    scrollbar-width: thin; /* Or 'auto' */
+    scrollbar-color: #0d0a20 transparent;
+}    
+    /* GLOBAL RESET & FONT */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        color: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* AMBIENT BACKGROUND EFFECTS */
+    .bg-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.4;
+      animation: float 15s infinite alternate ease-in-out;
+    }
+
+    .glow-1 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(123, 97, 255, 0.6) 0%, rgba(123, 97, 255, 0) 70%);
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .glow-2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(181, 84, 255, 0.6) 0%, rgba(181, 84, 255, 0) 70%);
+      bottom: 5%;
+      right: 5%;
+      animation-delay: -5s;
+    }
+
+    .glow-3 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(0, 194, 146, 0.5) 0%, rgba(0, 194, 146, 0) 70%);
+      top: 40%;
+      left: 60%;
+      animation-delay: -8s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -20px) scale(1.1); }
+      100% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+
+    /* HEADER */
+    header {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      padding: 15px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      transition: all 0.3s ease;
+    }
+
+    header:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .title-gradient {
+      font-size: 1.8rem;
+      font-weight: 600;
+      background: linear-gradient(45deg, #7b61ff, #b554ff, #8fd3f4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(123, 97, 255, 0.4);
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .title-gradient:hover {
+      text-shadow: 0 0 25px rgba(123, 97, 255, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .clear-icon {
+      font-size: 1.2rem;
+      background: none;
+      border: none;
+      color: #ff6b6b;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 4px;
+    }
+
+    .clear-icon:hover {
+      color: #ff8e8e;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+    }
+
+    /* MAIN CHAT CONTAINER */
+    #chatContainer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 30px;
+      position: relative;
+      padding-bottom: 220px; /* Adjusted for floating input */
+    }
+
+    /* MESSAGES SCROLL AREA */
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: rgba(181, 84, 255, 0.7) rgba(36, 36, 62, 0.8); /* Thumb: purple, Track: dark theme color */
+}
+
+#messages::-webkit-scrollbar {
+    width: 8px; /* Slightly wider for better visibility */
+}
+
+#messages::-webkit-scrollbar-track {
+    background: rgba(36, 36, 62, 0.8); /* Matches the body gradient's darkest shade */
+    border-radius: 10px;
+    border-left: 1px solid rgba(123, 97, 255, 0.2); /* Subtle purple accent */
+}
+
+#messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, rgba(123, 97, 255, 0.8), rgba(181, 84, 255, 0.8)); /* Gradient thumb */
+    border-radius: 10px;
+    border: 1px solid rgba(0, 194, 146, 0.3); /* Teal accent from theme */
+}
+
+#messages::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, rgba(181, 84, 255, 1), rgba(123, 97, 255, 1)); /* Brighter on hover */
+    border: 1px solid rgba(0, 194, 146, 0.5);
+}
+
+    .message {
+      margin-bottom: 20px;
+      line-height: 1.6;
+      max-width: 90%;
+      word-wrap: break-word;
+      padding: 18px 22px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      animation: messageIn 0.4s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes messageIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .user-msg {
+      background: rgba(123, 97, 255, 0.15);
+      align-self: flex-end;
+      margin-left: auto;
+      border-top-right-radius: 4px;
+      border-left: 1px solid rgba(123, 97, 255, 0.3);
+    }
+
+    .user-msg:hover {
+      background: rgba(123, 97, 255, 0.2);
+    }
+
+    .stellar-msg {
+      background: rgba(0, 0, 0, 0.25);
+      align-self: flex-start;
+      color: #a5f8e7;
+      border-top-left-radius: 4px;
+      border-right: 1px solid rgba(0, 194, 146, 0.3);
+    }
+
+    .stellar-msg:hover {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .stellar-msg ul,
+    .stellar-msg ol {
+      margin-left: 1.6em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      list-style-position: outside;
+    }
+
+    .stellar-msg a {
+      color: #7b61ff;
+      text-decoration: none;
+      border-bottom: 1px dotted #7b61ff;
+      transition: all 0.2s ease;
+    }
+
+    .stellar-msg a:hover {
+      color: #b554ff;
+      border-bottom: 1px solid #b554ff;
+    }
+
+    .research-output {
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      border: 1px solid rgba(0, 194, 146, 0.3);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .research-output:hover {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 194, 146, 0.4);
+    }
+
+    /* Edit and Download Buttons */
+    .edit-paper-btn, .download-btn {
+      margin-top: 10px;
+      margin-left: 10px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+    }
+
+    .edit-paper-btn {
+      background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
+    }
+
+    .download-btn {
+      background: linear-gradient(45deg, #00c292, #00d8b6);
+      display: none;
+    }
+
+    .edit-paper-btn:hover, .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    /* STATUS BAR */
+    #statusBar {
+      position: fixed;
+      width: 100%;
+      max-width: 1000px; /* Match the input container's max-width */
+      margin: 0 auto; /* Center align like the input container */
+      text-align: center;
+      padding: 6px;
+      font-size: 0.9rem;
+      color: #a5f8e7;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      height: 25px;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      opacity: 0.7;
+      transform: translateY(15px) translateX(-30px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+    }
+    #statusBar.active {
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 15px rgba(0, 194, 146, 0.3);
+      opacity: 1;
+      transform: translateY(5px) translateX(-30px);
+    }
+
+    /* INPUT BAR */
+    #inputContainer {
+      position: fixed;
+      bottom: 20px; /* Adjusted to float slightly above the bottom */
+      left: 0;
+      right: 0;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    #inputContainer:focus-within {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(123, 97, 255, 0.3);
+    }
+
+    #chatInput {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: none;
+      background: transparent;
+      color: #fff;
+      outline: none;
+      resize: none;
+      overflow-y: hidden;
+      min-height: 24px;
+      max-height: 240px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(123, 97, 255, 0.5) rgba(0, 0, 0, 0.1);
+    }
+
+    #chatInput::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #chatInput::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    #chatInput::-webkit-scrollbar-thumb {
+      background: rgba(123, 97, 255, 0.5);
+      border-radius: 10px;
+    }
+
+    #chatInput.research-mode {
+      background: transparent;
+      border: none;
+    }
+
+    #chatInput::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    #chatInput:focus::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .input-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Distribute items to left and right */
+      width: 100%;
+    }
+
+    .left-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .right-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #stellarExplorerBtn, #stellarSearchBtn {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.07); /* Default color (off state) */
+      border: none;
+      border-radius: 6px;
+      color: #D3D3D3;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: none;
+      pointer-events: auto; /* Ensure clickability */
+    }
+
+    #stellarExplorerBtn.active {
+      background: linear-gradient(45deg, #7b61ff, #b554ff); /* On state for Explorer */
+      border: 1px solid #b554ff;
+      box-shadow: 0 4px 10px rgba(123, 97, 255, 0.3);
+      color: #fff;
+    }
+
+    #stellarExplorerBtn:disabled, #stellarSearchBtn:disabled {
+      background: linear-gradient(45deg, #333, #444);
+      border: 1px solid #555;
+      color: #777;
+      cursor: not-allowed;
+      opacity: 0.6;
+      pointer-events: none; /* Prevent clicks when disabled */
+    }
+
+    #stellarExplorerBtn:hover:not(:disabled), #stellarSearchBtn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background: linear-gradient(45deg, #7b61ff, #b554ff);
+      border: 1px solid #b554ff;
+      box-shadow: 0 4px 10px rgba(123, 97, 255, 0.3);
+    }
+
+    #stellarSearchBtn {
+      display: none; /* Hidden by default */
+    }
+
+    #stellarSearchBtn.active {
+      display: inline-flex; /* Show when Explorer is on */
+    }
+
+    #stellarSearchBtn.on {
+      background: linear-gradient(45deg, #7b61ff, #b554ff);
+      color: #fff;
+    }
+
+    #modelSelect {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    background: linear-gradient(45deg, #7b61ff, #b554ff); /* Matching the button gradient */
+    border: 1px solid rgba(181, 84, 255, 0.5); /* Subtle border with theme color */
+    border-radius: 6px;
+    color: #ffffff; /* White text for contrast */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(123, 97, 255, 0.3), inset 0 0 5px rgba(123, 97, 255, 0.2); /* Glow effect */
+    appearance: none; /* Hide default browser arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative; /* For custom arrow positioning */
+    background-image: none; /* Custom purple arrow */
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px;
+}
+
+#modelSelect:hover, #modelSelect:focus {
+    background: linear-gradient(45deg, #b554ff, #7b61ff); /* Reverse gradient on hover */
+    border: 1px solid rgba(123, 97, 255, 0.7);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(123, 97, 255, 0.5), inset 0 0 8px rgba(123, 97, 255, 0.3); /* Enhanced glow */
+    outline: none; /* Remove default focus outline */
+}
+
+#modelSelect option {
+    background: #24243e; /* Matches body background for dropdown */
+    color: #D3D3D3;
+    padding: 8px;
+}
+
+#modelSelect option:hover {
+    background: linear-gradient(45deg, #7b61ff, #b554ff); /* Gradient on hover for options */
+    color: #ffffff;
+}
+
+#modelSelect[title], #modelSelect option[title]:hover {
+    background: rgba(48, 43, 99, 0.9);
+    color: #a5f8e7;
+    border: 1px solid rgba(123, 97, 255, 0.3);
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: 0 4px 15px rgba(123, 97, 255, 0.2);
+}
+
+    #sendBtn {
+      padding: 8px 16px; /* Increased padding to create space around the arrow */
+      font-size: 0.9rem;
+      background: linear-gradient(45deg, #7b61ff, #b554ff);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(123, 97, 255, 0.3);
+    }
+
+    #sendBtn:hover {
+      background: linear-gradient(45deg, #b554ff, #7b61ff);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(123, 97, 255, 0.4);
+    }
+
+    #sendBtn:active {
+      transform: translateY(0);
+    }
+
+    /* MODAL STYLING (for Edit Modal only) */
+    #editModalBackdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 12, 41, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, rgba(48, 43, 99, 0.6), rgba(36, 36, 62, 0.8));
+      border: 1px solid rgba(123, 97, 255, 0.3);
+      border-radius: 16px;
+      backdrop-filter: blur(20px);
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      animation: modalIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      transform: translateY(0) scale(1);
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.9); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      background: linear-gradient(45deg, #7b61ff, #b554ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    #editMarkdownInput {
+      width: 100%;
+      padding: 15px;
+      font-size: 1rem;
+      border: 1px solid rgba(123, 97, 255, 0.3);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #ffffff;
+      margin-bottom: 25px;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #editMarkdownInput:focus {
+      border: 1px solid rgba(123, 97, 255, 0.6);
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2), 0 0 15px rgba(123, 97, 255, 0.2);
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .modal-buttons button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    #cancelEditBtn {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #cancelEditBtn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #saveEditBtn {
+      background: linear-gradient(45deg, #7b61ff, #b554ff);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(123, 97, 255, 0.3);
+    }
+
+    #saveEditBtn:hover {
+      background: linear-gradient(45deg, #b554ff, #7b61ff);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(123, 97, 255, 0.4);
+    }
+
+    #saveEditBtn:active, #cancelEditBtn:active {
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE ADJUSTMENTS */
+    @media (max-width: 768px) {
+      header { padding: 15px; }
+      .clear-icon { font-size: 1rem; }
+      #chatContainer { padding: 20px 15px; }
+      .message { max-width: 95%; padding: 15px 18px; }
+      #statusBar { margin: 0 15px; }
+      .modal-content { padding: 20px; }
+      #inputContainer { padding: 8px; }
+    }
+
+    @media (max-width: 480px) {
+      .input-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .left-buttons, .right-buttons {
+        justify-content: flex-start;
+        width: 100%;
+      }
+    }
+
+    /* NEW CSS RULES TO FIX TEXT OVERFLOW */
+    .message-content {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    .message-content pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- AMBIENT BACKGROUND EFFECTS -->
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="title-gradient">Stellar</div>
+    <button class="clear-icon" id="clearHistoryBtn">🗑️</button>
+  </header>
+
+  <!-- MAIN CHAT CONTAINER -->
+  <div id="chatContainer">
+    <div id="messages"></div>
+    <div id="statusBar">Idle</div>
+    <div id="inputContainer">
+      <textarea id="chatInput" placeholder="Send a message to Stellar..." rows="1"></textarea>
+      <div class="input-buttons">
+        <div class="left-buttons">
+          <button id="stellarExplorerBtn">Stellar Explorer</button>
+          <button id="stellarSearchBtn">Stellar Search</button>
+        </div>
+        <div class="right-buttons">
+          <select id="modelSelect">
+            <option value="gemini-2.0-flash-lite" title="Optimized for speed, delivering quick text and research results with a trade-off in real-time data. Ideal for rapid prototyping or casual use.">Stellar Lightning</option>
+<option value="gemini-2.0-flash" title="Balanced performance with improved accuracy and stability, suitable for most research and text generation tasks.">Stellar Equilibria</option>
+<option value="gemini-2.0-flash-thinking-exp-01-21" selected title="Enhanced accuracy and depth for detailed research and complex text generation, highly recommended for thorough analysis.">Stellar Maximus</option>
+          </select>
+          <button id="sendBtn">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL BACKDROP & CONTENT -->
+  <div id="editModalBackdrop" style="display:none;">
+    <div class="modal-content">
+      <h2>Edit Research Paper</h2>
+      <textarea id="editMarkdownInput" rows="10" style="width:100%;"></textarea>
+      <div class="modal-buttons">
+        <button id="cancelEditBtn">Cancel</button>
+        <button id="saveEditBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Element references
+    const messagesDiv = document.getElementById("messages");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const stellarExplorerBtn = document.getElementById("stellarExplorerBtn");
+    const stellarSearchBtn = document.getElementById("stellarSearchBtn");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+    const modelSelect = document.getElementById("modelSelect");
+    const statusBar = document.getElementById("statusBar");
+    const inputContainer = document.getElementById("inputContainer");
+    const leftButtons = document.querySelector(".left-buttons");
+    const editModalBackdrop = document.getElementById("editModalBackdrop");
+    const editMarkdownInput = document.getElementById("editMarkdownInput");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const saveEditBtn = document.getElementById("saveEditBtn");
+
+    let isResearchMode = false;
+    let currentEditingMsg = null;
+    let currentResearchContent = "";
+    let lastRefinedQuery = "";
+    let isResearching = false;
+    let useStellarSearch = true; // Default to ON
+    let researchStatusMessage = "Researching... Feel free to continue your conversation.";
+    const turndownService = new TurndownService();
+
+    // Utility functions
+    function scrollToBottom() {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function appendUserMessage(text) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", "user-msg");
+      const contentDiv = document.createElement("div");
+      contentDiv.classList.add("message-content");
+      contentDiv.textContent = text;
+      msg.appendChild(contentDiv);
+      messagesDiv.appendChild(msg);
+      setTimeout(scrollToBottom, 50);
+    }
+
+    function appendStellarMessage(markdownText) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", "stellar-msg");
+      const contentDiv = document.createElement("div");
+      contentDiv.classList.add("message-content");
+      contentDiv.innerHTML = marked.parse(markdownText);
+      msg.appendChild(contentDiv);
+      messagesDiv.appendChild(msg);
+      setTimeout(scrollToBottom, 50);
+    }
+
+    function appendResearchOutput(htmlText) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", "stellar-msg", "research-output");
+      const contentDiv = document.createElement("div");
+      contentDiv.classList.add("message-content");
+      contentDiv.innerHTML = htmlText;
+      msg.appendChild(contentDiv);
+
+      const editButton = document.createElement("button");
+      editButton.textContent = "Edit Paper";
+      editButton.classList.add("edit-paper-btn");
+      editButton.addEventListener("click", () => {
+        showEditModal(htmlText, msg);
+      });
+
+      const downloadButton = document.createElement("button");
+      downloadButton.textContent = "Download";
+      downloadButton.classList.add("download-btn");
+      downloadButton.style.display = "inline-block";
+      downloadButton.addEventListener("click", () => downloadHtml());
+
+      msg.appendChild(editButton);
+      msg.appendChild(downloadButton);
+      messagesDiv.appendChild(msg);
+      currentResearchContent = htmlText;
+      setTimeout(scrollToBottom, 50);
+    }
+
+    function setStatus(text) {
+      statusBar.textContent = text;
+      if (text.toLowerCase() !== "idle") {
+        statusBar.classList.add("active");
+      } else {
+        statusBar.classList.remove("active");
+      }
+    }
+
+    function updateStatusAfterRefine() {
+      if (isResearching) {
+        setStatus(researchStatusMessage);
+      } else {
+        setStatus("Idle");
+      }
+    }
+
+    function updateStatusBarPosition() {
+      const inputHeight = inputContainer.offsetHeight;
+      statusBar.style.bottom = `${inputHeight + 30}px`; // At least 30px above the input box
+    }
+
+    // Auto-resize textarea and update status bar position
+    function adjustTextareaHeight() {
+      chatInput.style.height = "auto";
+      const newHeight = Math.min(chatInput.scrollHeight, 240); // Updated max height to 240px
+      chatInput.style.height = `${newHeight}px`;
+      chatInput.style.overflowY = newHeight >= 240 ? "auto" : "hidden";
+      updateStatusBarPosition();
+    }
+
+    // Modal functions
+    function showEditModal(htmlText, msgDiv) {
+      currentEditingMsg = msgDiv;
+      const markdownText = turndownService.turndown(htmlText);
+      editMarkdownInput.value = markdownText;
+      editModalBackdrop.style.display = "flex";
+      setTimeout(() => editMarkdownInput.focus(), 300);
+    }
+
+    function hideEditModal() {
+      editModalBackdrop.style.display = "none";
+      currentEditingMsg = null;
+    }
+useStellarSearch = true;
+
+    function updateSearchButtonState(isOn) {
+  console.log(`Updating Stellar Search state to: ${isOn}`);
+  useStellarSearch = isOn;
+  stellarSearchBtn.textContent = "Stellar Search";
+  stellarSearchBtn.classList.toggle("on", isOn);
+}
+
+function toggleResearchMode() {
+  if (stellarExplorerBtn.disabled) return;
+  isResearchMode = !isResearchMode;
+  stellarExplorerBtn.classList.toggle("active", isResearchMode);
+  stellarSearchBtn.classList.toggle("active", isResearchMode);
+  if (isResearchMode) {
+    updateSearchButtonState(true); // Default to ON
+  } else {
+    updateSearchButtonState(false); // Reset to OFF
+  }
+  chatInput.classList.toggle("research-mode", isResearchMode);
+  chatInput.placeholder = isResearchMode ? "Enter your research query..." : "Send a message to Stellar...";
+  chatInput.focus();
+}
+
+    // Core functionality
+    async function refineQuery(userQuery) {
+      try {
+        setStatus("Responding...");
+        const response = await fetch("/refine", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: userQuery, model_id: modelSelect.value })
+        });
+        const data = await response.json();
+        updateStatusAfterRefine();
+        if (data.error) {
+          appendStellarMessage("Error: " + data.error);
+        } else {
+          lastRefinedQuery = data.refined_query;
+          appendStellarMessage(data.refined_query);
+        }
+      } catch (err) {
+        updateStatusAfterRefine();
+        appendStellarMessage("Error: " + err.message);
+      }
+    }
+
+    async function handleSend() {
+      const userQuery = chatInput.value.trim();
+      if (!userQuery) return;
+      appendUserMessage(userQuery);
+      chatInput.value = "";
+      if (isResearchMode) {
+        const currentUseStellarSearch = useStellarSearch;
+        console.log(`Sending research query with useStellarSearch: ${currentUseStellarSearch}`);
+        toggleResearchMode(); // This sets isResearchMode to false and removes .active class
+        stellarExplorerBtn.disabled = true;
+        stellarSearchBtn.disabled = true; // Disable Stellar Search during research
+        await generatePaper(userQuery, currentUseStellarSearch);
+        // Re-enable buttons after research
+        stellarExplorerBtn.disabled = false;
+        stellarSearchBtn.disabled = false;
+        updateSearchButtonState(false); // Ensure state is reset after research
+      } else {
+        await refineQuery(userQuery);
+      }
+    }
+
+    async function generatePaper(finalQuery, useTavily) {
+      try {
+        isResearching = true;
+        setStatus(researchStatusMessage);
+        console.log(`Generating paper with query: "${finalQuery}", useTavily: ${useTavily}`);
+        const response = await fetch("/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: finalQuery,
+            useTavily: useTavily,
+            model_id: modelSelect.value
+          })
+        });
+        setStatus("Analyzing and organizing information...");
+        const data = await response.json();
+        if (data.error) {
+          setStatus("Idle");
+          appendStellarMessage("Error: " + data.error);
+        } else {
+          setStatus("Finalizing your research...");
+          appendResearchOutput(data.result);
+          setTimeout(() => setStatus("Idle"), 1500);
+        }
+      } catch (err) {
+        setStatus("Idle");
+        appendStellarMessage("Error: " + err.message);
+      } finally {
+        isResearching = false;
+      }
+    }
+
+    function downloadHtml() {
+      if (!currentResearchContent) {
+        appendStellarMessage("No research output to download.");
+        return;
+      }
+      setStatus("Preparing download...");
+      const fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Stellar Research Paper</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.7;
+      color: #333;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #f9f9fb;
+    }
+    h1 { font-size: 32px; margin-top: 40px; color: #302b63; border-bottom: 2px solid #eaeaea; padding-bottom: 10px; }
+    h2 { font-size: 26px; margin-top: 35px; color: #484495; }
+    h3 { font-size: 22px; margin-top: 30px; color: #5c5aa7; }
+    h4 { font-size: 18px; margin-top: 25px; color: #706db3; }
+    h5 { font-size: 16px; font-weight: bold; color: #7f7bbe; }
+    p { margin: 18px 0; }
+    strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Stellar Research Paper</h1>
+    <p>Generated on ${new Date().toLocaleDateString()}</p>
+  </div>
+  ${currentResearchContent}
+  <div class="footnote">
+    <p>This research paper was generated by Stellar AI. The content is for informational purposes only.</p>
+  </div>
+</body>
+</html>`;
+      const blob = new Blob([fullHtml], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "stellar-research-paper.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setStatus("Idle");
+    }
+
+    // Edit modal event listeners
+    cancelEditBtn.addEventListener("click", hideEditModal);
+
+    saveEditBtn.addEventListener("click", () => {
+      if (currentEditingMsg) {
+        const updatedMarkdown = editMarkdownInput.value.trim();
+        const updatedHtml = marked.parse(updatedMarkdown);
+        currentEditingMsg.innerHTML = updatedHtml;
+
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit Paper";
+        editButton.classList.add("edit-paper-btn");
+        editButton.addEventListener("click", () => {
+          showEditModal(updatedHtml, currentEditingMsg);
+        });
+
+        const downloadButton = document.createElement("button");
+        downloadButton.textContent = "Download";
+        downloadButton.classList.add("download-btn");
+        downloadButton.style.display = "inline-block";
+        downloadButton.addEventListener("click", () => downloadHtml());
+
+        currentEditingMsg.appendChild(editButton);
+        currentEditingMsg.appendChild(downloadButton);
+
+        const researchOutputs = messagesDiv.querySelectorAll(".research-output");
+        if (researchOutputs.length > 0 && currentEditingMsg === researchOutputs[researchOutputs.length - 1]) {
+          currentResearchContent = updatedHtml;
+        }
+      }
+      hideEditModal();
+    });
+
+    // Event listeners
+    sendBtn.addEventListener("click", handleSend);
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+    chatInput.addEventListener("input", adjustTextareaHeight);
+    stellarExplorerBtn.addEventListener("click", toggleResearchMode);
+
+    // Use event delegation for Stellar Search button
+    leftButtons.addEventListener("click", (e) => {
+      if (e.target.id === "stellarSearchBtn") {
+        if (stellarSearchBtn.disabled || !stellarSearchBtn.classList.contains("active")) {
+          console.log("Stellar Search click ignored: button is disabled or not active");
+          return;
+        }
+        console.log("Stellar Search clicked, toggling state");
+        updateSearchButtonState(!useStellarSearch);
+      }
+    });
+
+    clearHistoryBtn.addEventListener("click", async () => {
+      setStatus("Clearing conversation history...");
+      try {
+        const response = await fetch("/clear_history", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+        const data = await response.json();
+        if (data.message) {
+          messagesDiv.innerHTML = "";
+          lastRefinedQuery = "";
+          currentResearchContent = "";
+          appendStellarMessage("Hello! I'm Stellar, your AI research assistant. How can I help with your research today?");
+          setStatus("History cleared");
+          setTimeout(() => setStatus("Idle"), 2000);
+        } else {
+          appendStellarMessage("Failed to clear conversation history.");
+          setStatus("Idle");
+        }
+      } catch (err) {
+        appendStellarMessage("Error clearing conversation history: " + err.message);
+        setStatus("Idle");
+      }
+    });
+
+    // Initial setup
+    window.addEventListener("load", () => {
+      appendStellarMessage("Hello! I'm Stellar, your AI research assistant. How can I help with your research today?");
+      adjustTextareaHeight();
+      updateSearchButtonState(true); // Initialize Stellar Search state to ON
+    });
+
+    window.addEventListener("resize", updateStatusBarPosition);
+
+    // Debug: Log all clicks to diagnose event issues
+    document.addEventListener("click", (e) => {
+      console.log("Document click detected on:", e.target);
+    });
+  </script>
+</body>
+</html>
