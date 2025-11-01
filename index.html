@@ -218,6 +218,50 @@
             }
         }
 
+        #forge-left-panel, #problem-solving-content, #mentor-content-scroller {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .codelab-problem-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-text-color);
+        }
+
+        #workspace-panel.html-mode-active #code-editor-container {
+            width: 50%;
+        }
+
+        #workspace-panel.html-mode-active #html-preview-container {
+            display: block;
+        }
+
+        #ai-mentor-panel.html-view-active #problem-generation-container {
+            display: none;
+        }
+
+        #forge-status-log {
+            background-color: #1a1a1a;
+            color: #ccc;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
+            height: 150px;
+            overflow-y: auto;
+            border-top: 1px solid #444;
+        }
+
+        #forge-controls {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-top: 1px solid #444;
+        }
+
         #analysis-progress-area {
             position: fixed;
             bottom: 130px;
@@ -647,7 +691,12 @@
 
     <div id="codeLabContainer" style="display: none; flex-direction: column;">
         <div id="problem-solving-content"></div>
-        <div id="forge-container"></div>
+        <div id="forge-container">
+            <div id="forge-right-panel">
+                <div class="loading-overlay"></div>
+                <iframe id="forgePreviewFrame"></iframe>
+            </div>
+        </div>
     </div>
 
     <div id="profileModal" style="display:none;">
